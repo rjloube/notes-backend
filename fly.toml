@@ -1,0 +1,20 @@
+# fly.toml app configuration file generated for rjloube-notes-backend on 2023-11-18T16:41:33-08:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "rjloube-notes-backend"
+primary_region = "sjc"
+
+[build]
+
+[env]
+PORT = "3000"
+
+[http_service]
+auto_start_machines = true
+auto_stop_machines = true
+force_https = true
+internal_port = 3000
+min_machines_running = 0
+processes = ["app"]
