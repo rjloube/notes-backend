@@ -6,6 +6,14 @@ const api = supertest(app);
 
 const Note = require("../models/note");
 
+const getToken = async () => {
+  const response = await api.post("/api/login").send({
+    username: "root",
+    password: "sekret",
+  });
+  return response.body.token;
+};
+
 beforeEach(async () => {
   await Note.deleteMany({});
 
@@ -34,13 +42,17 @@ test("a specific note is within the returned notes", async () => {
 });
 
 test("a valid note can be added", async () => {
+  const token = await getToken();
+
   const newNote = {
     content: "async/await simplifies making async calls",
     important: true,
+    userId: "6682e54896c8176988fb47d3",
   };
 
   await api
     .post("/api/notes")
+    .set("Authorization", `Bearer ${token}`)
     .send(newNote)
     .expect(201)
     .expect("Content-Type", /application\/json/);
